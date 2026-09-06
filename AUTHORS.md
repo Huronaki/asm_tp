@@ -1,4 +1,4 @@
 # Authors
 
-Dasha Balashova  
+Daria Balashova  
 Groupe : b3b
