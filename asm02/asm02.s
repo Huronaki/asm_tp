@@ -15,7 +15,7 @@ _start:
   mov rdx, 10
   syscall
   
-  cmp rax, 2
+  cmp rax, 3
   jne .exit
   
   cmp byte [msg2], '4'
