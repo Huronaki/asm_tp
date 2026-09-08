@@ -18,6 +18,9 @@ _start:
 	cmp byte [rbx+1], '2'
 	jne .exit
 
+	cmp byte [rbx+2], 0
+	jne .exit
+
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, msg1
