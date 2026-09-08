@@ -15,15 +15,15 @@ _start:
   mov rdx, 10
   syscall
   
+  cmp rax, 2
+  jne .exit
+  
   cmp byte [msg2], '4'
+  jne .exit
+  
   cmp byte [msg2 + 1], '2'
+  jne .exit
   
-  je .equal
-  mov rax, 60
-  mov rdi, 1
-  syscall
-  
-  .equal
   mov rax, 1
   mov rdi, 1
   mov rsi, msg1
@@ -32,4 +32,9 @@ _start:
   
   mov rax, 60
   mov rdi, 0
+  syscall
+  
+  .exit
+  mov rax, 60
+  mov rdi, 1
   syscall
