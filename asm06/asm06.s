@@ -6,7 +6,7 @@ section .data
 
 section .text
 _start:
-    mov rsi, [rsp+16]           ;first argument
+    mov rsi, [rsp+16]
     xor rcx, rcx
 
 .count:
@@ -79,7 +79,7 @@ _start:
 .first_done:
     mov r9, rax  
 
-    mov rsi, [rsp+24]           ; second argument
+    mov rsi, [rsp+24]
     xor rcx, rcx
     xor rax, rax
 
