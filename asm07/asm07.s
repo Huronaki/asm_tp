@@ -63,7 +63,7 @@ _start:
 .check_prime:
     mov rcx, 2
 
-.check_prime_loop:                      ; CHECK IF PRIME HERE
+.check_prime_loop:
     mov rbx, rcx
     imul rbx, rcx
 
@@ -97,9 +97,3 @@ _start:
     mov rax, 60
     mov rdi, 2
     syscall 
-
-;  BUGS;
-;   -q is non prime
-;
-;
-;
