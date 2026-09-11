@@ -7,14 +7,10 @@ section .data
 section .text
 
 _start:
-
-; проверить наличие аргумена
     cmp qword [rsp], 1
     je .exit_error
 
     mov rsi, [rsp+16]
-
-; проверить что первый аргумент ТОЛЬКО позитивный инт (никаких символов кроме цифр)
 
 .count:
     cmp byte [rsi + rcx], 0
@@ -39,7 +35,6 @@ _start:
     inc rcx
     jmp .check_loop
 
-; конвертировать аргумент в число
 .check_done:
     xor rcx, rcx
 
@@ -63,7 +58,6 @@ _start:
     mov r8, rax
     xor rax, rax
 
-; посчитать 1 + 2 + ... + N-1 (где N наш первый аргумент)
 .counting_loop:
     cmp rcx, r8
     je .counting_done
@@ -73,7 +67,6 @@ _start:
     inc rcx
     jmp .counting_loop
 
-; конвертировать в строку rax
 .counting_done:
     xor rcx, rcx
     mov rsi, buffer + 21
@@ -90,10 +83,6 @@ _start:
     inc rcx
     test rax, rax
     jnz .convert_result
-
-; вывести в консоль с /n нашу сумму
-.end:
-
 
     mov rax, 1
     mov rdi, 1
