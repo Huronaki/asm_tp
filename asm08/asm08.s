@@ -7,8 +7,8 @@ section .data
 section .text
 
 _start:
-    cmp qword [rsp], 1
-    je .exit_error
+    cmp qword [rsp], 2
+    jne .exit_error
 
     mov rsi, [rsp+16]
 
