@@ -5,6 +5,9 @@ section .data
 section .text
 
 _start:
+    cmp qword [rsp], 2
+    jne .exit_error
+    
     mov rsi, [rsp+16]
 
 .count:
@@ -28,4 +31,9 @@ _start:
 
     mov rax, 60
     mov rdi, 0
+    syscall
+
+.exit_error:
+    mov rax, 60
+    mov rdi, 1
     syscall

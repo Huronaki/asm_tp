@@ -6,6 +6,9 @@ section .data
 
 section .text
 _start:
+    cmp qword [rsp], 3
+    jne .exit_error
+
     mov rsi, [rsp+16]
     xor rcx, rcx
 
@@ -198,5 +201,5 @@ _start:
 
 .exit_error:
     mov rax, 60
-    mov rdi, 2
+    mov rdi, 1
     syscall
