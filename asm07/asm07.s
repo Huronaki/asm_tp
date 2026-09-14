@@ -1,7 +1,7 @@
 global _start
   
 section .bss
-    msg resb 15
+    msg resb 21
 
 section .text
 _start:
@@ -9,7 +9,7 @@ _start:
     mov rax, 0
     mov rdi, 0
     mov rsi, msg
-    mov rdx, 15
+    mov rdx, 21
     syscall
 
     cmp byte [rsi + rax - 1], 10
