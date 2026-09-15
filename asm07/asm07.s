@@ -43,6 +43,17 @@ _start:
     cmp byte [rsi], '-'
     je .exit_non_prime
 
+    cmp byte [rsi], '0'
+    je .exit_non_prime
+
+    cmp byte [rsi], '1'
+    jne .continue
+
+    cmp rax, 1
+    je .exit_non_prime
+
+.continue:
+
     mov r8, rax
     xor rax, rax
     xor rcx, rcx
