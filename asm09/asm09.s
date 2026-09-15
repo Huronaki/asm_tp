@@ -7,8 +7,6 @@ section .data
 section .text
 
 _start:
-
-;------------------------------------ проверка кол-ва аргументов от 1-го до 2-х
     cmp qword [rsp], 2
     je .one_argument
 
@@ -17,12 +15,11 @@ _start:
 
     jmp .exit_error
 
-;------------------------------------ если 1 аргумент
 .one_argument:
     mov rsi, [rsp+16]
     xor rcx, rcx
 
-.count_loop:                             ; проверка аргумента, число ли
+.count_loop:
     cmp byte [rsi + rcx], 0
     je .count_done
 
@@ -49,7 +46,7 @@ _start:
     xor rax, rax  
     xor rcx, rcx
 
-.convert_loop:                      ; перевод в число
+.convert_loop:
     cmp rcx, r8
     je .convert_done
 
@@ -98,16 +95,9 @@ _start:
     jmp .exit_done
 
 
-;------------------------------------ перевод в 16х
-
-;------------------------------------ вывод 16х
-
-
-;------------------------------------ если 2 аргумент
-
 .two_arguments:
     mov rsi, [rsp+16]    
-    xor rcx, rcx                ; проверка 1-го аргумента, флаг ли
+    xor rcx, rcx
 
     cmp byte [rsi], '-'
     jne .exit_error
@@ -120,7 +110,7 @@ _start:
 
     mov rsi, [rsp+24]
 
-.count_loop2:                             ; проверка 2-го аргумента, число ли
+.count_loop2:
     cmp byte [rsi + rcx], 0
     je .count_done2
 
@@ -147,7 +137,7 @@ _start:
     xor rcx, rcx
     xor rax, rax  
 
-.convert_loop2:                      ; перевод 2-го аргумента в число
+.convert_loop2:
     cmp rcx, r8
     je .convert_done2
 
@@ -160,7 +150,7 @@ _start:
     inc rcx
     jmp .convert_loop2
 
-.convert_done2:;------------------------------------ перевод в бинарное
+.convert_done2:
     xor rcx, rcx
     mov rsi, buffer + 21
 
@@ -186,9 +176,6 @@ _start:
     test rax, rax
     jnz .convert_binary
     
-;------------------------------------ вывод бинарного
-
-
 .exit_done:
     mov rax, 1
     mov rdi, 1
