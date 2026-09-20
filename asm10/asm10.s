@@ -7,11 +7,14 @@ section .data
 section .text
 _start:
     cmp qword [rsp], 4
-    jne .exit_error
+    jne .exit_argument_error
 
 .check_first:
     mov rsi, [rsp+16]
     xor rcx, rcx
+
+    cmp byte [rsi], 0
+    je .exit_number_error
 
 .count1:
     cmp byte [rsi + rcx], 0
@@ -22,12 +25,14 @@ _start:
 
 .count_done1:
     mov r8, rcx
+    cmp r8, 20
+    jg .exit_number_error
 
     cmp byte [rsi], '-'
     jne .positive1
 
     cmp r8, 1
-    je .exit_error
+    je .exit_number_error
 
     mov rcx, 1
     jmp .check_loop1
@@ -40,10 +45,10 @@ _start:
     je .convert1
 
     cmp byte [rsi + rcx], '0'
-    jl .exit_error
+    jl .exit_number_error
 
     cmp byte [rsi + rcx], '9'
-    jg .exit_error
+    jg .exit_number_error
 
     inc rcx
     jmp .check_loop1
@@ -86,6 +91,9 @@ _start:
     mov rsi, [rsp+24]
     xor rcx, rcx
 
+    cmp byte [rsi], 0
+    je .exit_number_error
+
 .count2:
     cmp byte [rsi + rcx], 0
     je .count_done2
@@ -95,12 +103,14 @@ _start:
 
 .count_done2:
     mov r8, rcx
+    cmp r8, 20
+    jg .exit_number_error
 
     cmp byte [rsi], '-'
     jne .positive2
 
     cmp r8, 1
-    je .exit_error
+    je .exit_number_error
 
     mov rcx, 1
     jmp .check_loop2
@@ -113,10 +123,10 @@ _start:
     je .convert2
 
     cmp byte [rsi + rcx], '0'
-    jl .exit_error
+    jl .exit_number_error
 
     cmp byte [rsi + rcx], '9'
-    jg .exit_error
+    jg .exit_number_error
 
     inc rcx
     jmp .check_loop2
@@ -158,6 +168,9 @@ _start:
     mov rsi, [rsp+32]
     xor rcx, rcx
 
+    cmp byte [rsi], 0
+    je .exit_number_error
+
 .count3:
     cmp byte [rsi + rcx], 0
     je .count_done3
@@ -167,12 +180,14 @@ _start:
 
 .count_done3:
     mov r8, rcx
+    cmp r8, 20
+    jg .exit_number_error
 
     cmp byte [rsi], '-'
     jne .positive3
 
     cmp r8, 1
-    je .exit_error
+    je .exit_number_error
 
     mov rcx, 1
     jmp .check_loop3
@@ -185,10 +200,10 @@ _start:
     je .convert3
 
     cmp byte [rsi + rcx], '0'
-    jl .exit_error
+    jl .exit_number_error
 
     cmp byte [rsi + rcx], '9'
-    jg .exit_error
+    jg .exit_number_error
 
     inc rcx
     jmp .check_loop3
@@ -288,7 +303,12 @@ _start:
     mov rdi, 0
     syscall
 
-.exit_error:
+.exit_argument_error:
+    mov rax, 60
+    mov rdi, 2
+    syscall
+
+.exit_number_error:
     mov rax, 60
     mov rdi, 1
     syscall
