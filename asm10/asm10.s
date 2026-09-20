@@ -79,7 +79,7 @@ _start:
     neg rax
 
 .first_done:
-    mov r9, rax  ;--------- r9, first num
+    mov r9, rax
 
 
 .check_second:
@@ -152,7 +152,7 @@ _start:
     neg rax
 
 .second_done:
-    mov r10, rax  ;--------- r10, second num
+    mov r10, rax
 
 .check_third:
     mov rsi, [rsp+32]
@@ -224,13 +224,9 @@ _start:
     neg rax
 
 .third_done:
-    mov r11, rax  ;--------- r11, third num
+    mov r11, rax
 
 
-
-
-;------------compare-numbers-r9-r10-r11----------
-;----------if equal nums, just print it
     mov r8, r9
 
     cmp r10, r8
@@ -276,7 +272,7 @@ _start:
 
 
 
-.exit_result: ;---------rcx adress of result
+.exit_result:
     mov rax, 1
     mov rdi, 1
     mov rdx, rcx
