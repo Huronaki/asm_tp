@@ -51,7 +51,7 @@ _start:
 .write:
     mov rax, 1
     mov rdi, 1
-    mov rsi, reversed;-------------------YOUR_OUTPUT------------------
+    mov rsi, reversed
     mov rdx, r8
     syscall
 
