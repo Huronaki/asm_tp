@@ -12,6 +12,8 @@ _start:
     mov rdx, 21
     syscall
 
+    xor rcx, rcx
+
     cmp byte [rsi + rax - 1], 10
     jne .check_loop
 
@@ -21,9 +23,8 @@ _start:
     je .exit_error
 
     cmp byte [rsi], '-'
-    je .negative
+    jne .check_loop
 
-.negative:
     mov rcx, 1
 
 .check_loop:
@@ -69,13 +70,16 @@ _start:
     jo .exit_error
 
     add rax, rdx
-    jo .exit_rror
+    jo .exit_error
     
     inc rcx
     jmp .convert_loop
 
 .check_prime:
-    mov rcx, 2
+    cmp rax, 2
+    je .exit_prime
+
+    mov rcx, 3
 
 .check_prime_loop:
     mov rbx, rcx
@@ -88,14 +92,14 @@ _start:
     mov r8, rax
 
     xor rdx, rdx
-    div rbx
+    div rcx
 
     cmp rdx, 0
     je .exit_non_prime
 
     mov rax, r8
 
-    inc rcx
+    add rcx, 2
     jmp .check_prime_loop
 
 .exit_prime:
@@ -111,4 +115,4 @@ _start:
 .exit_error:
     mov rax, 60
     mov rdi, 2
-    syscall 
+    syscall
