@@ -71,7 +71,10 @@ _start:
     sub rdx, '0'
 
     imul rax, 10
+    jo .exit_argument_error
+
     add rax, rdx
+    jo .exit_argument_error
 
     inc rcx
     jmp .convert_loop1
@@ -149,7 +152,10 @@ _start:
     sub rdx, '0'
 
     imul rax, 10
+    jo .exit_argument_error
+
     add rax, rdx
+    jo .exit_argument_error
 
     inc rcx
     jmp .convert_loop2
@@ -226,7 +232,10 @@ _start:
     sub rdx, '0'
 
     imul rax, 10
+    jo .exit_argument_error
+
     add rax, rdx
+    jo .exit_argument_error
 
     inc rcx
     jmp .convert_loop3

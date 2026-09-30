@@ -66,7 +66,10 @@ _start:
     sub rdx, '0'
     
     imul rax, 10
+    jo .exit_error
+
     add rax, rdx
+    jo .exit_rror
     
     inc rcx
     jmp .convert_loop
@@ -77,6 +80,7 @@ _start:
 .check_prime_loop:
     mov rbx, rcx
     imul rbx, rcx
+    jo .exit_error
 
     cmp rbx, rax
     jg .exit_prime

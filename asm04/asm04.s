@@ -60,7 +60,10 @@ _start:
     sub rdx, '0'
     
     imul rax, 10
+    jo .not_number
+
     add rax, rdx
+    jo .not_number
     
     inc rcx
     jmp .convert_loop

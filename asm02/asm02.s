@@ -34,7 +34,7 @@ _start:
   mov rdi, 0
   syscall
   
-  .exit
+.exit:
   mov rax, 60
   mov rdi, 1
   syscall
