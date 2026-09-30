@@ -14,6 +14,9 @@ _start:
 
     xor rcx, rcx
 
+    cmp rax, 0
+    je .exit_error
+    
     cmp byte [rsi + rax - 1], 10
     jne .check_loop
 
