@@ -5,44 +5,50 @@ section .data
     newline db 10
 
 section .text
+
 _start:
     cmp qword [rsp], 4
     jne .exit_argument_error
 
-.check_first:
-    mov rsi, [rsp+16]
+    lea r12, [rsp + 16]
+
+    mov r13, 3
+
+.next_argument:
+    mov rsi, [r12]
     xor rcx, rcx
 
     cmp byte [rsi], 0
     je .exit_number_error
 
-.count1:
+.count:
     cmp byte [rsi + rcx], 0
-    je .count_done1
+    je .count_done
 
     inc rcx
-    jmp .count1
+    jmp .count
 
-.count_done1:
+.count_done:
     mov r8, rcx
+
     cmp r8, 20
     jg .exit_number_error
 
     cmp byte [rsi], '-'
-    jne .positive1
+    jne .positive
 
     cmp r8, 1
     je .exit_number_error
 
     mov rcx, 1
-    jmp .check_loop1
+    jmp .check_loop
 
-.positive1:
+.positive:
     xor rcx, rcx
 
-.check_loop1:
+.check_loop:
     cmp rcx, r8
-    je .convert1
+    je .convert
 
     cmp byte [rsi + rcx], '0'
     jl .exit_number_error
@@ -51,21 +57,20 @@ _start:
     jg .exit_number_error
 
     inc rcx
-    jmp .check_loop1
+    jmp .check_loop
 
-
-.convert1:
+.convert:
     xor rax, rax
     xor rcx, rcx
 
     cmp byte [rsi], '-'
-    jne .convert_loop1
+    jne .convert_loop
 
     mov rcx, 1
 
-.convert_loop1:
+.convert_loop:
     cmp rcx, r8
-    je .conversion_done1
+    je .conversion_done
 
     movzx rdx, byte [rsi + rcx]
     sub rdx, '0'
@@ -77,195 +82,33 @@ _start:
     jo .exit_argument_error
 
     inc rcx
-    jmp .convert_loop1
+    jmp .convert_loop
 
-
-.conversion_done1:
+.conversion_done:
     cmp byte [rsi], '-'
-    jne .first_done
+    jne .number_ready
 
     neg rax
 
-.first_done:
+.number_ready:
+    cmp r13, 3
+    jne .compare_with_max
+
+    mov r9, rax
+    jmp .next
+
+.compare_with_max:
+    cmp rax, r9
+    jle .next
+
     mov r9, rax
 
+.next:
+    add r12, 8
+    dec r13
+    jnz .next_argument
 
-.check_second:
-    mov rsi, [rsp+24]
-    xor rcx, rcx
-
-    cmp byte [rsi], 0
-    je .exit_number_error
-
-.count2:
-    cmp byte [rsi + rcx], 0
-    je .count_done2
-
-    inc rcx
-    jmp .count2
-
-.count_done2:
-    mov r8, rcx
-    cmp r8, 20
-    jg .exit_number_error
-
-    cmp byte [rsi], '-'
-    jne .positive2
-
-    cmp r8, 1
-    je .exit_number_error
-
-    mov rcx, 1
-    jmp .check_loop2
-
-.positive2:
-    xor rcx, rcx
-
-.check_loop2:
-    cmp rcx, r8
-    je .convert2
-
-    cmp byte [rsi + rcx], '0'
-    jl .exit_number_error
-
-    cmp byte [rsi + rcx], '9'
-    jg .exit_number_error
-
-    inc rcx
-    jmp .check_loop2
-
-
-.convert2:
-    xor rax, rax
-    xor rcx, rcx
-
-    cmp byte [rsi], '-'
-    jne .convert_loop2
-
-    mov rcx, 1
-
-.convert_loop2:
-    cmp rcx, r8
-    je .conversion_done2
-
-    movzx rdx, byte [rsi + rcx]
-    sub rdx, '0'
-
-    imul rax, 10
-    jo .exit_argument_error
-
-    add rax, rdx
-    jo .exit_argument_error
-
-    inc rcx
-    jmp .convert_loop2
-
-
-.conversion_done2:
-    cmp byte [rsi], '-'
-    jne .second_done
-
-    neg rax
-
-.second_done:
-    mov r10, rax
-
-.check_third:
-    mov rsi, [rsp+32]
-    xor rcx, rcx
-
-    cmp byte [rsi], 0
-    je .exit_number_error
-
-.count3:
-    cmp byte [rsi + rcx], 0
-    je .count_done3
-
-    inc rcx
-    jmp .count3
-
-.count_done3:
-    mov r8, rcx
-    cmp r8, 20
-    jg .exit_number_error
-
-    cmp byte [rsi], '-'
-    jne .positive3
-
-    cmp r8, 1
-    je .exit_number_error
-
-    mov rcx, 1
-    jmp .check_loop3
-
-.positive3:
-    xor rcx, rcx
-
-.check_loop3:
-    cmp rcx, r8
-    je .convert3
-
-    cmp byte [rsi + rcx], '0'
-    jl .exit_number_error
-
-    cmp byte [rsi + rcx], '9'
-    jg .exit_number_error
-
-    inc rcx
-    jmp .check_loop3
-
-
-.convert3:
-    xor rax, rax
-    xor rcx, rcx
-
-    cmp byte [rsi], '-'
-    jne .convert_loop3
-
-    mov rcx, 1
-
-.convert_loop3:
-    cmp rcx, r8
-    je .conversion_done3
-
-    movzx rdx, byte [rsi + rcx]
-    sub rdx, '0'
-
-    imul rax, 10
-    jo .exit_argument_error
-
-    add rax, rdx
-    jo .exit_argument_error
-
-    inc rcx
-    jmp .convert_loop3
-
-
-.conversion_done3:
-    cmp byte [rsi], '-'
-    jne .third_done
-
-    neg rax
-
-.third_done:
-    mov r11, rax
-
-
-    mov r8, r9
-
-    cmp r10, r8
-    jle .compare_third
-
-    mov r8, r10
-
-.compare_third:
-    cmp r11, r8
-    jle .end
-
-    mov r8, r11
-
-.end:
-    mov rax, r8
+    mov rax, r9
     mov rsi, buffer + 21
     xor rcx, rcx
 
@@ -287,14 +130,12 @@ _start:
     test rax, rax
     jnz .convert_result
 
-    cmp r8, 0
+    cmp r9, 0
     jge .exit_result
 
     dec rsi
     mov byte [rsi], '-'
     inc rcx
-
-
 
 .exit_result:
     mov rax, 1
@@ -312,12 +153,12 @@ _start:
     mov rdi, 0
     syscall
 
-.exit_argument_error:
-    mov rax, 60
-    mov rdi, 2
-    syscall
-
 .exit_number_error:
     mov rax, 60
     mov rdi, 1
+    syscall
+
+.exit_argument_error:
+    mov rax, 60
+    mov rdi, 2
     syscall
