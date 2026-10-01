@@ -16,7 +16,7 @@ _start:
     syscall
 
     cmp rax, 0
-    je .exit_error
+    je .empty_string
 
     cmp rax, 1025
     jg .exit_error
@@ -27,7 +27,7 @@ _start:
     dec rax
 
     cmp rax, 0
-    je .exit_error
+    je .empty_string
 
 .correct_input:
     mov r8, rax
@@ -55,12 +55,12 @@ _start:
     mov rdx, r8
     syscall
 
+.empty_string:
     mov rax, 1
     mov rdi, 1
     mov rsi, newline
     mov rdx, 1
     syscall
-
 
     mov rax, 60
     mov rdi, 0
