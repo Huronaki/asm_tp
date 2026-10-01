@@ -48,7 +48,6 @@ _start:
     dec rcx
     jnz .reverse
 
-;-----------------reversed с изначальной строкой сравнить---------------
     xor rcx, rcx
 
 .compare_loop:
