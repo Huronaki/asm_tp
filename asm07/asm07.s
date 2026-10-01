@@ -118,17 +118,3 @@ _start:
     mov rax, 60
     mov rdi, 2
     syscall
-
-
-; BUGS
-; 6 -> exit 0
-; 10 -> exit 0
-; 15 -> exit 0
-; 21 -> exit 0
-; 12345678901234567890\n -> exit 2
-; 123456789012345678901\n -> exit 2
-; 123456789012345678901 -> exit 2
-; a\n -> exit 1
-;  123\n -> exit 0
-; 0002\n -> exit 1
-; 1010\n -> exit 0
