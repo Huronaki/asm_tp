@@ -87,15 +87,17 @@ _start:
     cmp rax, 1
     je .exit_non_prime
 
+    mov r9, rax
     mov rcx, 2
 
 .check_prime_loop:
     mov rdx, rcx
     imul rdx, rcx
 
-    cmp rdx, rax
+    cmp rdx, r9
     jg .exit_prime
 
+    mov rax, r9
     xor rdx, rdx
     div rcx
 
