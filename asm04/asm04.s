@@ -11,9 +11,13 @@ _start:
     mov rsi, msg
     mov rdx, 21
     syscall
-  
+    
+    cmp byte [rsi + rax - 1], 10
+    jne .no_newline
+
     dec rax
-  
+
+  .no_newline:
     cmp rax, 0
     je .not_number
   
