@@ -16,7 +16,6 @@ _start:
   mov rdx, 10
   syscall
   
-  ;------check last byte if \n
   cmp byte [rsi + rax - 1], 10
   jne .no_newline
 
