@@ -2,6 +2,7 @@ global _start
 
 section .data
   msg1 db "1337"
+  newline db 10
   
 section .bss
   msg2 resb 10
@@ -15,7 +16,14 @@ _start:
   mov rdx, 10
   syscall
   
-  cmp rax, 3
+  ;------check last byte if \n
+  cmp byte [rsi + rax - 1], 10
+  jne .no_newline
+
+  dec rax
+
+  .no_newline:
+  cmp rax, 2
   jne .exit
   
   cmp byte [msg2], '4'
@@ -28,6 +36,12 @@ _start:
   mov rdi, 1
   mov rsi, msg1
   mov rdx, 4
+  syscall
+
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, newline
+  mov rdx, 1
   syscall
   
   mov rax, 60
