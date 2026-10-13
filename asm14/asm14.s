@@ -1,7 +1,7 @@
 global _start:
 
 section .data
-    msg db "Hello, Universe!", 10
+    msg db "Hello Universe!", 10
     msg_len equ $ - msg
 
 section .text
@@ -43,7 +43,7 @@ _start:
     mov rax, 3
     mov rdi, r12
     syscall
-    
+
     jmp .exit_path_error
 
 .exit_path_error:
