@@ -76,17 +76,17 @@ _start:
     sub rdx, '0'
 
     imul rax, 10
-    jo .exit_argument_error
+    jo .exit_number_error
 
-    add rax, rdx
-    jo .exit_argument_error
+    sub rax, rdx
+    jo .exit_number_error
 
     inc rcx
     jmp .convert_loop
 
 .conversion_done:
     cmp byte [rsi], '-'
-    jne .number_ready
+    je .number_ready
 
     neg rax
 
