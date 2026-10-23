@@ -59,6 +59,7 @@ _start:
     inc rcx
     jmp .check_loop
 
+
 .convert:
     xor rax, rax
     xor rcx, rcx
@@ -75,6 +76,25 @@ _start:
     movzx rdx, byte [rsi + rcx]
     sub rdx, '0'
 
+    ; Limit before multiplying: -922337203685477580
+    mov r10, -922337203685477580
+
+    cmp rax, r10
+    jl .exit_number_error
+    jne .accumulate
+
+    ; Last digit limit: 8 for negative, 7 for positive
+    mov r11, 7
+    cmp byte [rsi], '-'
+    jne .check_last_digit
+
+    mov r11, 8
+
+.check_last_digit:
+    cmp rdx, r11
+    ja .exit_number_error
+
+.accumulate:
     imul rax, 10
     jo .exit_number_error
 
