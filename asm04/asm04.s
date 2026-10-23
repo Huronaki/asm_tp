@@ -61,12 +61,10 @@ _start:
 .check_negative:
     xor rcx, rcx
     xor rax, rax
-    xor r9, r9
 
     cmp byte [rsi], '-'
     jne .convert_loop
 
-    mov r9, 1
     inc rcx
 
 .convert_loop:
@@ -76,15 +74,14 @@ _start:
     movzx rdx, byte [rsi + rcx]
     sub rdx, '0'
 
-    mov r10, -922337203685477580
-    cmp rax, r10
-    jl .exit_error
-    jne .accumulate
+    imul rax, 10
+    jo .exit_error
 
-    mov r11, 7
-    cmp r9, 1
-    jne .check_last_digit
-    mov r11, 8
+    sub rax, rdx
+    jo .exit_error
+
+    inc rcx
+    jmp .convert_loop
 
 .check_last_digit:
     cmp rdx, r11

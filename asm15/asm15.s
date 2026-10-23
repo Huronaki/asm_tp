@@ -1,4 +1,3 @@
-
 global _start
 
 section .bss
@@ -7,13 +6,11 @@ section .bss
 section .text
 
 _start:
-    ; Exactly one argument: shift
     cmp qword [rsp], 2
     jne .exit_usage
 
     mov rsi, [rsp + 16]
 
-    ; Determine sign
     xor r9, r9
     xor r8, r8
 
@@ -34,7 +31,6 @@ _start:
     cmp byte [rsi], 0
     je .exit_error
 
-    ; Validate digits
 .check_loop:
     movzx rdx, byte [rsi]
     test rdx, rdx
@@ -50,8 +46,6 @@ _start:
     jmp .check_loop
 
 .start_conversion:
-    ; rsi currently points to the string terminator.
-    ; Re-fetch argv[1] and skip optional sign.
     mov rsi, [rsp + 16]
 
     cmp byte [rsi], '-'
@@ -65,9 +59,8 @@ _start:
     inc rsi
 
 .conversion_init:
-    xor rax, rax             ; negative accumulator
+    xor rax, rax
     xor rcx, rcx
-    mov r10, -922337203685477580
 
 .convert_loop:
     movzx rdx, byte [rsi + rcx]
@@ -76,21 +69,6 @@ _start:
 
     sub rdx, '0'
 
-    ; Check signed 64-bit range before multiplying
-    cmp rax, r10
-    jl .exit_error
-    jne .accumulate
-
-    mov r11d, 7
-    cmp r9, 1
-    jne .check_last_digit
-    mov r11d, 8
-
-.check_last_digit:
-    cmp rdx, r11
-    ja .exit_error
-
-.accumulate:
     imul rax, 10
     jo .exit_error
 
@@ -101,13 +79,13 @@ _start:
     jmp .convert_loop
 
 .conversion_done:
-    ; Convert positive input to positive value
     cmp r9, 1
     je .normalize_shift
+
     neg rax
+    jo .exit_error
 
 .normalize_shift:
-    ; Reduce shift to 0..25
     cqo
     mov r10, 26
     idiv r10
@@ -140,7 +118,6 @@ _start:
 
     movzx rax, byte [r15 + r14]
 
-    ; Uppercase letters
     cmp al, 'A'
     jb .check_lower
     cmp al, 'Z'
@@ -158,7 +135,6 @@ _start:
     jmp .next_char
 
 .check_lower:
-    ; Lowercase letters
     cmp al, 'a'
     jb .next_char
     cmp al, 'z'
