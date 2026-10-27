@@ -1,4 +1,3 @@
-
 global _start
 
 section .data
@@ -32,9 +31,8 @@ _start:
     test rax, rax
     jle .exit_error
 
-    mov r13, rax                 ; количество прочитанных байтов
+    mov r13, rax
 
-    ; Ищем "1337"
     xor rcx, rcx
 
 .search_loop:
