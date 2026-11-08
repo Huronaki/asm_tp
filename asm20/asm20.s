@@ -3,7 +3,7 @@ global _start
 section .data
     server_addr:
         dw 2
-        dw 0x9a10
+        dw 0x9210
         dd 0x0100007f
         dq 0
 
